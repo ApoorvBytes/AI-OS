@@ -1,4 +1,5 @@
-from tool_registry import Tool, ToolRegistry
+
+from .tool_registry import Tool, ToolRegistry
 
 
 def get_system_info():

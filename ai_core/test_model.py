@@ -1,4 +1,4 @@
-from model import MockProvider
+from .model import MockProvider
 
 
 def test_mock_provider():

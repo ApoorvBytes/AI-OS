@@ -1,4 +1,4 @@
-from permissions import (
+from .permissions import (
     PermissionManager,
     PermissionRequest,
     RiskLevel,

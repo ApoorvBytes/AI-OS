@@ -1,4 +1,4 @@
-from system_info import SystemInfoTool
+from .system_info import SystemInfoTool
 
 
 def test_system_info():
