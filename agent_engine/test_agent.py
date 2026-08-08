@@ -1,24 +1,20 @@
 from agent_engine.agent import Agent
 from ai_core.tool_registry import Tool, ToolRegistry
 from system_services.permissions import RiskLevel, PermissionManager
+from system_services.system_info import SystemInfoTool
 
 
-def get_system_info():
-    return {
-        "operating_system": "Windows",
-        "architecture": "AMD64",
-    }
-
-
-def test_agent_can_execute_low_risk_tool():
+def test_agent_executes_real_system_tool():
     registry = ToolRegistry()
+
+    system_info_tool = SystemInfoTool()
 
     registry.register(
         Tool(
-            name="get_system_info",
+            name=system_info_tool.name,
             description="Get basic system information",
-            risk_level="LOW",
-            execute=get_system_info,
+            risk_level=system_info_tool.risk_level,
+            execute=system_info_tool.execute,
         )
     )
 
@@ -37,7 +33,12 @@ def test_agent_can_execute_low_risk_tool():
 
     assert result.success is True
     assert result.tool_name == "get_system_info"
-    assert result.result["operating_system"] == "Windows"
+    assert result.result.operating_system
+    assert result.result.architecture
+
+    print("Real system tool executed successfully.")
+    print(f"OS: {result.result.operating_system}")
+    print(f"Architecture: {result.result.architecture}")
 
 
 def test_agent_blocks_high_risk_tool():
@@ -68,9 +69,11 @@ def test_agent_blocks_high_risk_tool():
     assert result.success is False
     assert result.error == "Permission denied."
 
+    print("High-risk tool correctly blocked.")
+
 
 if __name__ == "__main__":
-    test_agent_can_execute_low_risk_tool()
+    test_agent_executes_real_system_tool()
     test_agent_blocks_high_risk_tool()
 
-    print("Agent engine tests passed.")
+    print("Agent integration tests passed.")
